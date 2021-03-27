@@ -14,7 +14,7 @@ update inventory file locally (Reflects github repository AnsibleREPO)
 
 ansible all --list-hosts (to verify all hosts)
 
-new 1main.txt
+
 GITHUB STEPS
 
 git status
