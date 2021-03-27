@@ -1,0 +1,280 @@
+Repository  GIthub
+add ssh key (public to git)
+In AnsibleREPO repository clickk on CODE to get SSH address
+git@github.com:solar999/AnsibleREPO.git
+
+eve@Linux-Desktop:~$ cd /home/eve/AnsibleREPO   (repository folder on ansible controller LINMAIN)
+git config --global user.name "Ade Adebayo"
+git config --global user.emeil "ade.adebayo@ymail.com"
+
+eve@Linux-Desktop:~/AnsibleREPO$ nano ~/.gitconfig  (to display global details entered)
+eve@Linux-Desktop:~/AnsibleREPO$ ls
+initial  inventory  README.md
+update inventory file locally (Reflects github repository AnsibleREPO)
+
+ansible all --list-hosts (to verify all hosts)
+
+new 1main.txt
+GITHUB STEPS
+
+git status
+git add
+git status
+git commit
+git push
+
+To upload unto GITHUB
+eve@Linux-Desktop:~/AnsibleREPO$ git status
+On branch main
+Your branch is up-to-date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   inventory
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+To replicate changes
+eve@Linux-Desktop:~/AnsibleREPO$ git add inventory
+
+eve@Linux-Desktop:~/AnsibleREPO$ git status
+On branch main
+Your branch is up-to-date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   inventory
+
+COMMIT CHANGES TO GITHUB
+eve@Linux-Desktop:~/AnsibleREPO$ git commit -m "updated Inventory file 27/03/2021"
+[main c6ca63e] updated Inventory file 27/03/2021
+ 1 file changed, 20 insertions(+), 4 deletions(-)
+ 
+ UPDATE GITHUB
+ eve@Linux-Desktop:~/AnsibleREPO$ git push origin main
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 430 bytes | 143.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To github.com:solar999/AnsibleREPO.git
+   e0d3fd5..c6ca63e  main -> main
+ 
+																	
+
+
+https://packetswitch.co.uk/ansible-with-cisco/
+---
+
+- name: Cisco ip interface brief + ip route
+  hosts: routers
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: run show ip interface brief + ip route
+      ios_command:
+        commands: 
+          - show ip interface brief
+          - show ip route
+      register: output
+
+    - name: print output
+      debug:
+        var: output.stdout_lines
+
+
+
+Example show version on cisco routers
+
+---
+
+- name: Cisco show version example
+  hosts: routers
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: run show version on the routers    (task1)
+      ios_command:
+        commands: show version | incl Version
+      register: output
+
+    - name: print output       (task2)
+      debug:
+        var: output.stdout_lines
+
+
+    YAML file starts with ---
+    name - Any arbitrary name
+    hosts - Referring to the inventory group called 'routers'
+    gather_facts - We don't need to gather any information from the routers. This may be useful when working with servers.
+    connection - Playbook is run against a network device.
+    register - You can create variables from the output of an Ansible task with the task keyword register. You can use registered variables in any later tasks in your play
+    debug - This module prints statements during execution.
+    stdout_lines - Ansible will print the output in an easy to readable format.
+
+We are running two tasks, first one runs show version | incl Version on both routers and saves the output in a variable
+called output. The Second task prints the variable ouput in a nice format
+
+There are two types of data formats in the YAML file: List and Key-Value pairs
+List items are designated by a - (dash)
+Key-Value pairs are designated as Key: Value																																					
+
+- name: run multiple commands on remote nodes
+  cisco.ios.ios_command:
+    commands:
+    - show version
+    - show interfaces
+	
+second.yml playbook
+---
+- name: first play
+  hosts: routers
+  gather_facts: false
+  connection: local
+  tasks:
+     - name: First task
+       debug:
+         var: ansible_facts
+     - name: execute & command
+       shell: uptime
+       register: uptime
+     - name: show uptime
+       debug:
+         var: uptime
+		 
+to install cisco ios modules 
+ansible-galaxy collection install cisco.ios
+ansible-playbook second.yml --syntax-check
+		 
+[routers]
+IOSRTR ansible_host=192.168.1.100
+vIOS ansible_host=10.10.10.99
+192.168.1.10
+192.168.1.100
+10.10.10.99
+10.10.10.20
+
+[routers:vars]
+ansible_network_os=ios
+ansible_user=eve
+ansible_password=eve
+
+[servers]
+192.168.1.48 ansible_user=eve ansible_password=eve
+192.168.1.45 ansible_user=eve ansible_password=eve
+10.10.10.90 ansible_user=eve ansible_password=eve
+10.10.10.50 ansible_user=eve ansible_password=eve
+
+
+eve@Linux-Desktop:~$ ssh -Q key
+ssh-ed25519
+ssh-ed25519-cert-v01@openssh.com
+sk-ssh-ed25519@openssh.com
+sk-ssh-ed25519-cert-v01@openssh.com
+ssh-rsa
+ssh-dss
+ecdsa-sha2-nistp256
+ecdsa-sha2-nistp384
+ecdsa-sha2-nistp521
+sk-ecdsa-sha2-nistp256@openssh.com
+ssh-rsa-cert-v01@openssh.com
+ssh-dss-cert-v01@openssh.com
+ecdsa-sha2-nistp256-cert-v01@openssh.com
+ecdsa-sha2-nistp384-cert-v01@openssh.com
+ecdsa-sha2-nistp521-cert-v01@openssh.com
+sk-ecdsa-sha2-nistp256-cert-v01@openssh.com
+eve@Linux-Desktop:~$ ssh -Q cipher
+3des-cbc
+aes128-cbc
+aes192-cbc
+aes256-cbc
+rijndael-cbc@lysator.liu.se
+aes128-ctr
+aes192-ctr
+aes256-ctr
+aes128-gcm@openssh.com
+aes256-gcm@openssh.com
+chacha20-poly1305@openssh.com
+eve@Linux-Desktop:~$ ssh -Q kex
+diffie-hellman-group1-sha1
+diffie-hellman-group14-sha1
+diffie-hellman-group14-sha256
+diffie-hellman-group16-sha512
+diffie-hellman-group18-sha512
+diffie-hellman-group-exchange-sha1
+diffie-hellman-group-exchange-sha256
+ecdh-sha2-nistp256
+ecdh-sha2-nistp384
+ecdh-sha2-nistp521
+curve25519-sha256
+curve25519-sha256@libssh.org
+sntrup4591761x25519-sha512@tinyssh.org
+eve@Linux-Desktop:~$ ssh -Q mac
+hmac-sha1
+hmac-sha1-96
+hmac-sha2-256
+hmac-sha2-512
+hmac-md5
+hmac-md5-96
+umac-64@openssh.com
+umac-128@openssh.com
+hmac-sha1-etm@openssh.com
+hmac-sha1-96-etm@openssh.com
+hmac-sha2-256-etm@openssh.com
+hmac-sha2-512-etm@openssh.com
+hmac-md5-etm@openssh.com
+hmac-md5-96-etm@openssh.com
+umac-64-etm@openssh.com
+umac-128-etm@openssh.com
+
+
+To get the list of all supported algorithms, ciphers and methods that our SSH client currently supports, we can use the ‘-Q’ option like this:
+
+ssh -Q mac
+ssh -Q kex
+ssh -Q key
+ssh -Q cipher
+
+
+
+
+{
+echo -n 'Ciphers '
+ssh -Q cipher | tr '\n' ',' | sed -e 's/,$//'; echo
+
+echo -n 'MACs '
+ssh -Q mac | tr '\n' ',' | sed -e 's/,$//'; echo
+
+echo -n 'HostKeyAlgorithms '
+ssh -Q key | tr '\n' ',' | sed -e 's/,$//'; echo
+
+echo -n 'KexAlgorithms '
+ssh -Q kex | tr '\n' ',' | sed -e 's/,$//'; echo
+
+} >> ~/.ssh/config
+
+
+
+server pubkey
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCw2nFCeOas/p3uvjoErwhM+qWA
+NNNvey3SQ8bu5xoHEqwSA7Wyn5puveahX/saooMM3uHp4962x/JzuobhlO7sqQj
+3C11U1u3KhXOhhBBX2a2RvdxVHz7fe4iEfxMTn3nOtxF7OZ06R27tuTDzE5BzGSK
+ioA8IGuvD/ClT9gqho/3c1ONeCqAc6HGSenegJH+7EWkMLVP2XXlcVS5V+A2M8I
+JEeJc5tRbJ/0Twn3vSF5gb/GgRhijzECwgsrzHWq/G2/K4ON7m1eaDn1xopfzL
+Biw8vJ9KWotp+I4W3S3twOyWDmhHghFhdwLVo25LCZMu1Gw/DVGqhbP1IP2B3gtz
+QR3F5Gm70p0nzEUGTYHTd6vBjUOoK/rb3UdQXcqlE+PNlz28GnwQRoIZrmOUwVJ
+wE1N3XSw7gxVpIv71AZzi9/rhdeXO5w+ZiJHSlF0dvs8O6Mg2DZt0yRb+ibuU
+5n/zNFHt9JWJ2pPhZssPG0kS39Z5/jFJUEdpRI5chZGbbOk= eve@Linux-Desktop
+
+Ansible commands
+
+eve@Linux-Desktop:/etc/ansible$ ansible all --list-hosts
+
+
+
+
